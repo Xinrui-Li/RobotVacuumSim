@@ -10,6 +10,10 @@ import java.util.Scanner;
  * @author Austen Seidler
  */
 public class FileManager {
+    //TODO: When doors are added to the Room class, readHouseFromFile and WriteHouseToFile
+    //will need to be updated to include door location in the file.
+    //Switching from txt files to JSON would also be preferable.
+    
     /**
      * Reads a house from a file in the savedHouses folder.
      * File format:
