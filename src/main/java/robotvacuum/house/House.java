@@ -10,6 +10,8 @@ import java.awt.Rectangle;
  */
 
 public class House extends Rectangle {
+    //TODO: When doors are added to the Room class, addRoom will need to be updated
+    //to let the user specify door location.
     //constants
     public static final int DEFAULT_X = 0;
     public static final int DEFAULT_Y = 0;
