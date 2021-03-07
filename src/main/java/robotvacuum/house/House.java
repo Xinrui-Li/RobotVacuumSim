@@ -34,7 +34,8 @@ public class House extends Rectangle {
     
     /**
     * Adds a new room to the house.
-    * Fails if the room extends outside the house,
+    * Fails if the room is smaller than 4 sq ft,
+    * if the room extends outside the house,
     * if the room's walls intersects another room's walls,
     * or if the room's walls intersect furniture.
     * 
@@ -45,6 +46,10 @@ public class House extends Rectangle {
     */
     public void addRoom(int originPointX, int originPointY, int roomWidth, int roomHeight) {
         Room newRoom = new Room(originPointX, originPointY, roomWidth, roomHeight);
+        if (newRoom.getWidth()*newRoom.getHeight() < 4) {
+            System.out.println("Invalid size: room cannot be smaller than 4 sq ft.");
+            return;
+        }
         if (!(this.contains(newRoom))) {
             System.out.println("Invalid location: room cannot extend outside house");
             return;
@@ -129,8 +134,8 @@ public class House extends Rectangle {
     
     /**
      * Changes the width of the house.
-     * Fails if the change would cause the area of the house to exceed 8000 sq ft
-     * or be less than 200 sq ft.
+     * Fails if the change would cause the area of the house to exceed 8000 sq ft, 
+     * be less than 200 sq ft, or fail to contain a room or furniture item.
      * Use instead of Rectangle's setSize() to ensure size stays within bounds.
      * 
      * @param inputWidth the new width of the house
@@ -143,15 +148,31 @@ public class House extends Rectangle {
             System.out.println("Error: house area too small");
         }
         else {
+            int originalWidth = width;
             width = inputWidth;
-            System.out.println("House width changed to " + width);
+            for (Room r : rooms) {
+                if (!(this.contains(r))) {
+                    width = originalWidth;
+                    System.out.println("Error: New width fails to completely contain a room.");
+                }
+            }
+            for (Furniture f : furniture) {
+                if (!this.contains(f)) {
+                    width = originalWidth;
+                    System.out.println("Error: new width fails to completely contain a furniture item.");
+                }
+            }
+            
+            if (width == inputWidth) {
+                System.out.println("House width changed to " + width);
+            }
         }
     }
     
     /**
      * Changes the height of the house.
-     * Fails if the change would cause the area of the house to exceed 8000 sq ft
-     * or be less than 200 sq ft.
+     * Fails if the change would cause the area of the house to exceed 8000 sq ft,
+     * be less than 200 sq ft, or fail to contain a room or furniture item.
      * Use instead of Rectangle's setSize() to ensure size stays within bounds.
      * 
      * @param inputHeight the new height of the house
@@ -164,8 +185,24 @@ public class House extends Rectangle {
             System.out.println("Error: house area too small");
         }
         else {
+            int originalHeight = height;
             height = inputHeight;
-            System.out.println("House height changed to " + height);
+            for (Room r : rooms) {
+                if (!(this.contains(r))) {
+                    height = originalHeight;
+                    System.out.println("Error: New height fails to completely contain a room.");
+                }
+            }
+            for (Furniture f : furniture) {
+                if (!this.contains(f)) {
+                    height = originalHeight;
+                    System.out.println("Error: new height fails to completely contain a furniture item.");
+                }
+            }
+            
+            if (height == inputHeight) {
+                System.out.println("House height changed to " + height);
+            }
         }
     }
     
@@ -207,6 +244,15 @@ public class House extends Rectangle {
     }
     
     /**
+     * Returns every room in the house.
+     * 
+     * @return A list of every room
+     */
+    public ArrayList<Room> getAllRooms() {
+        return rooms;
+    }
+    
+    /**
      * Returns the furniture item with the given values for x and y.
      * 
      * @param x the x-coordinate of the furniture item to return
@@ -222,6 +268,15 @@ public class House extends Rectangle {
         }
         System.out.println("Furniture not found.");
         return null;
+    }
+    
+    /**
+     * Returns every furniture item in the house.
+     * 
+     * @return A list of every furniture item
+     */
+    public ArrayList<Furniture> getAllFurniture() {
+        return furniture;
     }
     
     /**
